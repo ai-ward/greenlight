@@ -9,14 +9,29 @@ description = "See what your MCP server is actually doing -- a transparent stdio
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.10"
+keywords = ["mcp", "model-context-protocol", "debugging", "proxy", "cli"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Debuggers",
+]
 dependencies = [
     "rich>=13.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/ai-ward/greenlight"
+Issues = "https://github.com/ai-ward/greenlight/issues"
 
 [project.optional-dependencies]
 dev = [
     "mcp>=1.0",
     "pytest>=8.0",
+    "build>=1.0",
+    "twine>=5.0",
 ]
 
 [project.scripts]
