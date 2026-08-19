@@ -9,6 +9,9 @@ import sys
 from pathlib import Path
 from typing import Optional, Sequence
 
+from rich.console import Console
+
+from greenlight.banner import print_banner
 from greenlight.proxy import SESSIONS_DIR, run_proxy
 from greenlight.render import latest_session, tail_file
 
@@ -30,7 +33,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         prog="greenlight",
         description="See what your MCP server is actually doing.",
     )
-    subparsers = parser.add_subparsers(dest="cmd", required=True)
+    subparsers = parser.add_subparsers(dest="cmd", required=False)
 
     run_p = subparsers.add_parser(
         "run",
@@ -57,6 +60,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
     args = parser.parse_args(argv)
 
+    if args.cmd is None:
+        print_banner(Console())
+        parser.print_help()
+        return 0
+
     if args.cmd == "run":
         command = list(args.command)
         if command and command[0] == "--":
@@ -71,6 +79,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             parser.error(f"no session logs found in {SESSIONS_DIR} -- run `greenlight run -- ...` first")
         if not path.exists():
             parser.error(f"no such file: {path}")
+        print_banner(Console())
         tail_file(path, follow=args.follow)
         return 0
 
