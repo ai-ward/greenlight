@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.claude/
+.env
+
+# recorded session logs -- these are runtime output, not source.
+# examples/*.jsonl is a curated fixture and is intentionally NOT ignored.
+sessions/
+/*.jsonl
