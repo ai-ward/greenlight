@@ -23,10 +23,14 @@ Greenlight exists to fix that.
 ## Install
 
 ```bash
-pip install -e .
+pip install greenlight-mcp
 ```
 
-(Not yet published to PyPI as `greenlight-mcp` -- install from source for now.)
+Or from source:
+
+```bash
+pip install -e .
+```
 
 ## Use it
 
@@ -80,7 +84,7 @@ parsing.
       against a Python fixture server)
 - [ ] HTTP/SSE transport (stdio only for now -- covers the common local
       MCP server case)
-- [ ] Published to PyPI
+- [x] Published to PyPI -- `pip install greenlight-mcp`
 
 ## Notes
 
