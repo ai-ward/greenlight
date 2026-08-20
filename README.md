@@ -20,6 +20,12 @@ Right now, if an MCP integration isn't working, you're debugging blind:
 no visibility into what got sent, what came back, or why a call failed.
 Greenlight exists to fix that.
 
+![greenlight tail, showing a real session: a normal call, a slow call flagged yellow, and a failed tool call flagged red](examples/demo.gif)
+
+Real trace, from an actual recorded session (`examples/demo-session.jsonl`) --
+not staged text. Green for a clean success, yellow for a slow-but-fine
+call, red for a tool that actually failed.
+
 ## Install
 
 ```bash
@@ -79,12 +85,12 @@ parsing.
       a real MCP server (not a mock)
 - [x] `greenlight tail` -- live trace viewer, both static replay and
       genuine live-follow (verified separately, not assumed)
-- [x] Windows PATH resolution for `npx`-style commands
-- [ ] Tested against a real npx-launched server (so far only validated
-      against a Python fixture server)
+- [x] Windows PATH resolution for `npx`-style commands, validated against
+      a real third-party npx-launched server (the official MCP reference
+      server), not just the Python fixture
+- [x] Published to PyPI -- `pip install greenlight-mcp`
 - [ ] HTTP/SSE transport (stdio only for now -- covers the common local
       MCP server case)
-- [x] Published to PyPI -- `pip install greenlight-mcp`
 
 ## Notes
 
