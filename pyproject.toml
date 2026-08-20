@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "greenlight-mcp"
-version = "0.1.0"
-description = "See what your MCP server is actually doing -- a transparent stdio proxy and live trace viewer for the Model Context Protocol."
+version = "0.2.0"
+description = "See what your MCP server is actually doing -- a transparent stdio/HTTP proxy and live trace viewer for the Model Context Protocol."
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.10"
-keywords = ["mcp", "model-context-protocol", "debugging", "proxy", "cli"]
+keywords = ["mcp", "model-context-protocol", "mcp-inspector", "debugging", "proxy", "cli", "llm"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Environment :: Console",
