@@ -56,6 +56,18 @@ instead of
 npx -y @some/mcp-server
 ```
 
+For a remote Streamable HTTP server, proxy it instead of spawning a
+process:
+
+```bash
+greenlight run --http http://127.0.0.1:9000/mcp
+```
+
+Greenlight prints the local URL to point your client at (the same path
+as the target, just on `127.0.0.1:8808` -- see the printed message,
+which includes the exact path). Same session log, same `tail`/`stats`
+downstream, regardless of which transport produced it.
+
 Every message that passes through gets logged to `./sessions/`. Watch it:
 
 ```bash
@@ -111,8 +123,8 @@ parsing.
 - [x] Published to PyPI -- `pip install greenlight-mcp`
 - [x] `greenlight stats` -- summary + CI-usable exit code (non-zero on
       any failure, transport or tool-level)
-- [ ] HTTP/SSE transport (stdio only for now -- covers the common local
-      MCP server case)
+- [x] Streamable HTTP transport (`greenlight run --http <url>`),
+      validated end-to-end against a real HTTP+SSE server, not just stdio
 
 ## Notes
 

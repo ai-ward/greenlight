@@ -32,4 +32,13 @@ def boom() -> str:
 
 
 if __name__ == "__main__":
-    server.run()
+    import sys
+    # Default: stdio, used by the stdio proxy tests. Pass "streamable-http"
+    # and a port to run the same tool definitions over HTTP instead, for
+    # the HTTP proxy tests -- one set of tools, not two copies to drift
+    # apart.
+    if len(sys.argv) > 1 and sys.argv[1] == "streamable-http":
+        port = int(sys.argv[2]) if len(sys.argv) > 2 else 9000
+        server.run(transport="streamable-http", port=port)
+    else:
+        server.run()

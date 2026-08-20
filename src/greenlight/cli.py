@@ -12,6 +12,7 @@ from typing import Optional, Sequence
 from rich.console import Console
 
 from greenlight.banner import print_banner
+from greenlight.http_proxy import run_http_proxy
 from greenlight.proxy import SESSIONS_DIR, run_proxy
 from greenlight.render import latest_session, tail_file
 from greenlight.stats import compute_stats, format_stats
@@ -42,8 +43,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     )
     run_p.add_argument("--name", default=None, help="session name (defaults to the command's name)")
     run_p.add_argument(
+        "--http", default=None, metavar="URL",
+        help="proxy a Streamable HTTP MCP server at this URL instead of spawning a stdio process "
+             "-- point your client at the local URL greenlight prints, not this one",
+    )
+    run_p.add_argument(
+        "--port", type=int, default=8808,
+        help="local port to listen on for --http mode (default: 8808)",
+    )
+    run_p.add_argument(
         "command", nargs=argparse.REMAINDER,
-        help="the real MCP server command, e.g. -- npx -y @some/mcp-server",
+        help="the real MCP server command, e.g. -- npx -y @some/mcp-server (ignored with --http)",
     )
 
     tail_p = subparsers.add_parser(
@@ -78,11 +88,16 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         return 0
 
     if args.cmd == "run":
+        if args.http:
+            return run_http_proxy(args.http, port=args.port, session_name=args.name)
         command = list(args.command)
         if command and command[0] == "--":
             command = command[1:]
         if not command:
-            parser.error("no server command given -- e.g. `greenlight run -- npx -y @some/mcp-server`")
+            parser.error(
+                "no server command given -- e.g. `greenlight run -- npx -y @some/mcp-server`, "
+                "or `greenlight run --http <url>` for a Streamable HTTP server"
+            )
         return run_proxy(_resolve(command), session_name=args.name)
 
     if args.cmd == "tail":
