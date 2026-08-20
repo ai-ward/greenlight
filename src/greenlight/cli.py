@@ -14,6 +14,7 @@ from rich.console import Console
 from greenlight.banner import print_banner
 from greenlight.proxy import SESSIONS_DIR, run_proxy
 from greenlight.render import latest_session, tail_file
+from greenlight.stats import compute_stats, format_stats
 
 
 def _resolve(command: list[str]) -> list[str]:
@@ -58,6 +59,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="keep watching for new messages, like `tail -f` (use this while a session is still running)",
     )
 
+    stats_p = subparsers.add_parser(
+        "stats",
+        help="Summarize a session: message counts, latency, and whether anything failed. "
+             "Exits non-zero on failure -- usable as a CI check.",
+    )
+    stats_p.add_argument(
+        "path", nargs="?", default=None,
+        help="session log to summarize (defaults to the most recent one in ./sessions)",
+    )
+    stats_p.add_argument("--json", action="store_true", help="print machine-readable JSON instead")
+
     args = parser.parse_args(argv)
 
     if args.cmd is None:
@@ -82,6 +94,20 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         print_banner(Console())
         tail_file(path, follow=args.follow)
         return 0
+
+    if args.cmd == "stats":
+        path = Path(args.path) if args.path else latest_session(SESSIONS_DIR)
+        if path is None:
+            parser.error(f"no session logs found in {SESSIONS_DIR} -- run `greenlight run -- ...` first")
+        if not path.exists():
+            parser.error(f"no such file: {path}")
+        stats = compute_stats(path)
+        if args.json:
+            import json
+            print(json.dumps(stats, indent=2))
+        else:
+            print(format_stats(stats, path))
+        return 1 if stats["failed"] else 0
 
     parser.error(f"unknown command {args.cmd!r}")
     return 2

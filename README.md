@@ -9,6 +9,10 @@
 
 # greenlight
 
+[![PyPI](https://img.shields.io/pypi/v/greenlight-mcp)](https://pypi.org/project/greenlight-mcp/)
+[![Python](https://img.shields.io/pypi/pyversions/greenlight-mcp)](https://pypi.org/project/greenlight-mcp/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+
 See what your MCP server is actually doing.
 
 A transparent stdio proxy for the Model Context Protocol. Point it at
@@ -67,6 +71,22 @@ transport-level JSON-RPC errors, which are a different thing and easy to
 miss if you only check for the obvious one. See `notes/day1.md` for why
 that distinction mattered enough to write a whole note about it.
 
+Or skip watching it and just get the summary:
+
+```bash
+greenlight stats                # message counts, latency, pass/fail
+greenlight stats --json         # same thing, machine-readable
+```
+
+`stats` exits non-zero if anything failed -- transport error or tool
+error -- so it works as a CI check, not just an interactive summary:
+
+```bash
+greenlight run -- npx -y @some/mcp-server &
+# ... drive a real session against it ...
+greenlight stats || exit 1
+```
+
 ## How it works
 
 `greenlight run` spawns your real server as a subprocess and sits
@@ -89,6 +109,8 @@ parsing.
       a real third-party npx-launched server (the official MCP reference
       server), not just the Python fixture
 - [x] Published to PyPI -- `pip install greenlight-mcp`
+- [x] `greenlight stats` -- summary + CI-usable exit code (non-zero on
+      any failure, transport or tool-level)
 - [ ] HTTP/SSE transport (stdio only for now -- covers the common local
       MCP server case)
 
