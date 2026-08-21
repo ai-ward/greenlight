@@ -24,6 +24,15 @@ Right now, if an MCP integration isn't working, you're debugging blind:
 no visibility into what got sent, what came back, or why a call failed.
 Greenlight exists to fix that.
 
+**Why not [MCP Inspector](https://github.com/modelcontextprotocol/inspector)?**
+Different job. Inspector is a UI you drive yourself to manually test a
+server in isolation. Greenlight sits transparently in the path of your
+*real* client -- Claude Desktop, Claude Code, whatever's actually
+running -- and records what really happened, not what you tried by
+hand. It also writes a durable log (`greenlight stats` exits non-zero on
+failure, so it runs in CI) instead of a live session you have to be
+watching.
+
 ![greenlight tail, showing a real session: a normal call, a slow call flagged yellow, and a failed tool call flagged red](examples/demo.gif)
 
 Real trace, from an actual recorded session (`examples/demo-session.jsonl`) --
