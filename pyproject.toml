@@ -23,8 +23,8 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/ai-ward/greenlight"
-Issues = "https://github.com/ai-ward/greenlight/issues"
+Homepage = "https://github.com/bradsward/greenlight"
+Issues = "https://github.com/bradsward/greenlight/issues"
 
 [project.optional-dependencies]
 dev = [
